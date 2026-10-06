@@ -13,6 +13,12 @@ local Games = {
         PlaceId = 105011592530400,
         Script = "https://raw.githubusercontent.com/imranisthegoat/Drive-A-Car-And-Drive-/refs/heads/main/Script.txt"
     },
+
+    {
+        Name = "Logo For Brainrots",
+        PlaceId = 123959902101040,
+        Script = "https://raw.githubusercontent.com/imranisthegoat/logo-for-brainrot/refs/heads/main/script.txt"
+    },
 }
 
 local CurrentPlaceId = game.PlaceId
