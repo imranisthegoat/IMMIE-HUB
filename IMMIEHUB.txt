@@ -1,0 +1,93 @@
+
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/gen2"))()
+
+local Games = {
+    {
+        Name = "Totally Balanced Soul Ops Boss Rush",
+        PlaceId = 11717233041,
+        Script = "https://raw.githubusercontent.com/imranisthegoat/TOTALLY-BALANCED-SOUL-OPS-BOSS-RUSH/refs/heads/main/Script.txt"
+    },
+
+    {
+        Name = "Drive A Car And Drive",
+        PlaceId = 105011592530400,
+        Script = "https://raw.githubusercontent.com/imranisthegoat/Drive-A-Car-And-Drive-/refs/heads/main/Script.txt"
+    },
+}
+
+local CurrentPlaceId = game.PlaceId
+local CurrentGame = nil
+
+for _, gameInfo in ipairs(Games) do
+    if gameInfo.PlaceId == CurrentPlaceId then
+        CurrentGame = gameInfo
+        break
+    end
+end
+
+local Window = Rayfield:CreateWindow({
+    name = "IMMIE HUB",
+    subtitle = "Universal Game Hub",
+    sidebarLayout = true,
+})
+
+local HomeTab = Window:CreateTab({
+    name = "Home",
+    icon = 93364949241311
+})
+
+if CurrentGame then
+
+    HomeTab:CreateLabel({
+        text = "Game: " .. CurrentGame.Name
+    })
+
+    HomeTab:CreateLabel({
+        text = "Place ID: " .. tostring(CurrentPlaceId)
+    })
+
+    HomeTab:CreateButton({
+        name = "Load Script",
+        callback = function()
+            local success, result = pcall(function()
+                return loadstring(game:HttpGet(CurrentGame.Script))()
+            end)
+
+            if not success then
+                warn("[IMMIE HUB] Script failed to load:")
+                warn(result)
+            end
+        end,
+    })
+
+    task.spawn(function()
+        local success, result = pcall(function()
+            return loadstring(game:HttpGet(CurrentGame.Script))()
+        end)
+
+        if not success then
+            warn("[IMMIE HUB] Failed to automatically load script:")
+            warn(result)
+        end
+    end)
+
+else
+
+    HomeTab:CreateLabel({
+        text = "Game not supported"
+    })
+
+    HomeTab:CreateLabel({
+        text = "Place ID: " .. tostring(CurrentPlaceId)
+    })
+
+    HomeTab:CreateButton({
+        name = "Check Game",
+        callback = function()
+            warn("[IMMIE HUB] No script is registered for this game.")
+            warn("PlaceId:", CurrentPlaceId)
+        end,
+    })
+
+end
+```
