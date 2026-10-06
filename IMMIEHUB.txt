@@ -38,56 +38,50 @@ local HomeTab = Window:CreateTab({
 
 if CurrentGame then
 
-    HomeTab:CreateLabel({
-        text = "Game: " .. CurrentGame.Name
+    HomeTab:CreateText({
+        name = "Current Game",
+        text = CurrentGame.Name
     })
 
-    HomeTab:CreateLabel({
-        text = "Place ID: " .. tostring(CurrentPlaceId)
+    HomeTab:CreateText({
+        name = "Place ID",
+        text = tostring(CurrentPlaceId)
     })
 
     HomeTab:CreateButton({
         name = "Load Script",
         callback = function()
             local success, result = pcall(function()
-                return loadstring(game:HttpGet(CurrentGame.Script))()
+                local Script = loadstring(game:HttpGet(CurrentGame.Script))
+
+                if not Script then
+                    error("Failed to compile script")
+                end
+
+                Script()
             end)
 
-            if not success then
+            if success then
+                if Window.Hide then
+                    Window:Hide()
+                end
+            else
                 warn("[IMMIE HUB] Script failed to load:")
                 warn(result)
             end
         end,
     })
 
-    task.spawn(function()
-        local success, result = pcall(function()
-            return loadstring(game:HttpGet(CurrentGame.Script))()
-        end)
-
-        if not success then
-            warn("[IMMIE HUB] Failed to automatically load script:")
-            warn(result)
-        end
-    end)
-
 else
 
-    HomeTab:CreateLabel({
-        text = "Game not supported"
+    HomeTab:CreateText({
+        name = "Game Not Supported",
+        text = "No script is registered for this game."
     })
 
-    HomeTab:CreateLabel({
-        text = "Place ID: " .. tostring(CurrentPlaceId)
-    })
-
-    HomeTab:CreateButton({
-        name = "Check Game",
-        callback = function()
-            warn("[IMMIE HUB] No script is registered for this game.")
-            warn("PlaceId:", CurrentPlaceId)
-        end,
+    HomeTab:CreateText({
+        name = "Place ID",
+        text = tostring(CurrentPlaceId)
     })
 
 end
-```
